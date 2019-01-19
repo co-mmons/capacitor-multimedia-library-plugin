@@ -1,0 +1,38 @@
+{
+  "name": "@co.mmons/capacitor-multimedia-library-plugin",
+  "version": "0.1.0",
+  "description": "Multimedia library plugin for Capacitor",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "npm run clean && tsc",
+    "clean": "rm -rf ./dist",
+    "watch": "tsc --watch"
+  },
+  "author": "co.mmons",
+  "license": "MIT",
+  "dependencies": {
+    "@capacitor/core": "latest"
+  },
+  "devDependencies": {
+    "@capacitor/android": "latest",
+    "@capacitor/cli": "latest",
+    "@capacitor/ios": "latest",
+    "typescript": "~3.2.0"
+  },
+  "capacitor": {
+    "ios": {
+      "src": "ios"
+    },
+    "android": {
+      "src": "android"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/co-mmons/capacitor-multimedia-library-plugin"
+  },
+  "bugs": {
+    "url": "https://github.com/co-mmons/capacitor-multimedia-library-plugin/issues"
+  }
+}
