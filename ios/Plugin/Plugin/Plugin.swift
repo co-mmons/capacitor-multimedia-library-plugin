@@ -9,18 +9,18 @@ public class CAPMultimediaLibraryPlugin: CAPPlugin {
         
     }
     
-    @objc func save(call: CAPPluginCall) {
+    @objc func saveImage(call: CAPPluginCall) {
         
         let status = PHPhotoLibrary.authorizationStatus();
         
         if (status == PHAuthorizationStatus.authorized) {
-            doSave(call: call);
+            doSaveImage(call: call);
             
         } else if (status == PHAuthorizationStatus.notDetermined) {
             
             PHPhotoLibrary.requestAuthorization {status in
                 if (status == PHAuthorizationStatus.authorized) {
-                    self.doSave(call: call);
+                    self.doSaveImage(call: call);
                 } else {
                     self.rejectNotAuthorized(call: call);
                     return;
@@ -38,7 +38,7 @@ public class CAPMultimediaLibraryPlugin: CAPPlugin {
         call.reject("Not authorized to access multimedia library");
     }
     
-    func doSave(call: CAPPluginCall) {
+    func doSaveImage(call: CAPPluginCall) {
         
         let inputPath = call.getString("file");
         if (inputPath == nil) {
@@ -54,8 +54,20 @@ public class CAPMultimediaLibraryPlugin: CAPPlugin {
             return;
         }
         
-        PHPhotoLibrary.saveImage(image: inputImage!, albumName: albumName!, completion: { asset in
-            <#code#>
+        PHPhotoLibrary.saveImage(image: inputImage!, albumName: albumName!, completion: { imageAsset, error in
+            if (imageAsset != nil) {
+                
+                var result: [String: Any] = [:];
+                result["fileId"] = imageAsset?.burstIdentifier;
+                
+                imageAsset!.requestContentEditingInput(with: PHContentEditingInputRequestOptions()) { (input, _) in
+                    result["filePath"] = input!.fullSizeImageURL;
+                }
+                
+                call.resolve(result);
+            } else {
+                call.reject("Unknown error, image not saved in the library", error);
+            }
         });
     }
 }

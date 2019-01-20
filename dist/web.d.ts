@@ -1,17 +1,11 @@
 import { WebPlugin } from "@capacitor/core";
-import { FirebaseMessagingPlugin } from "./plugin";
-import { NotificationsPermissionState } from "./notifications-permission-state";
-export declare class FirebaseMessagingWebPlugin extends WebPlugin implements FirebaseMessagingPlugin {
+import { MultimediaLibraryPlugin } from "./plugin";
+export declare class MultimediaLibraryWebPlugin extends WebPlugin implements MultimediaLibraryPlugin {
     constructor();
-    openNotificationsPermissionSettings(): void;
-    notificationsPermissionState(): Promise<{
-        "state": NotificationsPermissionState;
+    saveImage(call: {
+        file: string;
+        album?: string;
+    }): Promise<{
+        filePath: string;
     }>;
-    subscribeToTopic(call: {
-        topic: string;
-    }): Promise<void>;
-    unsubscribeFromTopic(call: {
-        topic: string;
-    }): Promise<void>;
-    destroy(): Promise<void>;
 }

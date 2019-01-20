@@ -7,7 +7,7 @@ export class MultimediaLibraryWebPlugin extends WebPlugin implements MultimediaL
 		super({name: "MultimediaLibrary", platforms: ["web"]});
 	}
 	
-	save(call: {file: string, album?: string}): Promise<{newFile: string}> {
+	saveImage(call: {file: string, album?: string}): Promise<{filePath: string}> {
 		throw new Error("Method not implemented.");
 	}
 	

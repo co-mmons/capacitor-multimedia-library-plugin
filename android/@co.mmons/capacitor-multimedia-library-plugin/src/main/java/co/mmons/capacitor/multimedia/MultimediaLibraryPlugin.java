@@ -29,16 +29,16 @@ public class MultimediaLibraryPlugin extends Plugin {
     }
 
     @PluginMethod
-    void save(PluginCall call) {
+    void saveImage(PluginCall call) {
 
         if (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            doSave(call);
+            doSaveImage(call);
         } else {
             pluginRequestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
         }
     }
 
-    private void doSave(PluginCall call) {
+    private void doSaveImage(PluginCall call) {
 
         String inputPath = call.getString("file");
         if (inputPath == null) {
@@ -59,7 +59,7 @@ public class MultimediaLibraryPlugin extends Plugin {
             scanPhoto(expFile);
 
             JSObject result = new JSObject();
-            result.put("newFile", expFile.toString());
+            result.put("filePath", expFile.toString());
             call.resolve(result);
 
         } catch (RuntimeException e) {

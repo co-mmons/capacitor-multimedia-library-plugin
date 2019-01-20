@@ -7,14 +7,13 @@ declare global {
 }
 
 export interface MultimediaLibraryPlugin {
-    save(call: {file: string, album?: string}): Promise<{newFile: string}>;
+    saveImage(call: {file: string, album?: string}): Promise<{filePath: string}>;
 }
 
 export namespace MultimediaLibraryPlugin {
 
-    export async function save(file: string, album?: string): Promise<string> {
-        let newFile = await Plugins.MultimediaLibrary.save({file: file, album: album});
-        return newFile.newFile;
+    export async function save(file: string, album?: string): Promise<{filePath: string}> {
+        return await Plugins.MultimediaLibrary.saveImage({file: file, album: album});
     }
 
 }

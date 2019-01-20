@@ -7,24 +7,24 @@ extension PHPhotoLibrary {
     typealias PhotoAsset = PHAsset
     typealias PhotoAlbum = PHAssetCollection
     
-    static func saveImage(image: UIImage, albumName: String, completion: @escaping (PHAsset?, Error) -> ()) {
+    static func saveImage(image: UIImage, albumName: String, completion: @escaping (PHAsset?, Error?) -> ()) {
         
         if let album = self.findAlbum(albumName: albumName) {
             saveImage(image: image, album: album, completion: completion);
             return;
         }
         
-        createAlbum(albumName: albumName) { album in
+        createAlbum(albumName: albumName) { album, error  in
             if let album = album {
                 self.saveImage(image: image, album: album, completion: completion);
             }
             else {
-                assert(false, "Album is nil");
+                completion(nil, error);
             }
         }
     }
     
-    static private func saveImage(image: UIImage, album: PhotoAlbum, completion: @escaping (PHAsset?, Error)->()) {
+    static private func saveImage(image: UIImage, album: PhotoAlbum, completion: @escaping (PHAsset?, Error?)->()) {
         
         var placeholder: PHObjectPlaceholder?
         
@@ -52,17 +52,15 @@ extension PHPhotoLibrary {
         }, completionHandler: { success, error in
             
             guard let placeholder = placeholder else {
-                assert(false, "Placeholder is nil");
-                completion(nil, );
+                completion(nil, NSError(domain: "Placeholder is nill", code: 500));
                 return;
             }
             
             if success {
                 let assets = PHAsset.fetchAssets(withLocalIdentifiers: [placeholder.localIdentifier], options: nil);
-                completion(assets[0]);
+                completion(assets[0], nil);
             } else {
-                print(error ?? "Unknow error, when adding file to multimedia library");
-                completion(nil);
+                completion(nil, error ?? NSError(domain: "Unknow error, when adding file to multimedia library", code: 500));
             }
         })
     }
@@ -81,7 +79,7 @@ extension PHPhotoLibrary {
         return photoAlbum;
     }
     
-    static func createAlbum(albumName: String, completion: @escaping (PhotoAlbum?)->()) {
+    static func createAlbum(albumName: String, completion: @escaping (PhotoAlbum?, Error?)->()) {
         
         var albumPlaceholder: PHObjectPlaceholder?;
         
@@ -95,24 +93,21 @@ extension PHPhotoLibrary {
         }, completionHandler: { success, error in
             
             guard let placeholder = albumPlaceholder else {
-                assert(false, "Album placeholder is nil");
-                completion(nil);
+                completion(nil, NSError(domain: "Album placeholder is nil", code: 500));
                 return;
             }
             
             let fetchResult = PHAssetCollection.fetchAssetCollections(withLocalIdentifiers: [placeholder.localIdentifier], options: nil);
             
             guard let album = fetchResult.firstObject else {
-                assert(false, "FetchResult has no PHAssetCollection");
-                completion(nil);
+                completion(nil, NSError(domain: "FetchResult has no PHAssetCollection", code: 500));
                 return;
             }
             
             if success {
-                completion(album);
+                completion(album, nil);
             } else {
-                print(error ?? "Unknown error when creating multimedia album");
-                completion(nil);
+                completion(nil, error ?? NSError(domain: "Unknown error when creating multimedia album", code: 500));
             }
         })
     }
