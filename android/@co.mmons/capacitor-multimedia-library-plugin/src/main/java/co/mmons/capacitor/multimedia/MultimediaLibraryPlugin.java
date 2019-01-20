@@ -22,19 +22,20 @@ import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@NativePlugin(name = "MultimediaLibrary")
+@NativePlugin(name = "MultimediaLibrary", requestCodes = {9800})
 public class MultimediaLibraryPlugin extends Plugin {
 
     public void load() {
     }
 
     @PluginMethod
-    void saveImage(PluginCall call) {
+    public void saveImage(PluginCall call) {
 
         if (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             doSaveImage(call);
         } else {
-            pluginRequestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            saveCall(call);
+            pluginRequestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, 9800);
         }
     }
 
@@ -46,7 +47,8 @@ public class MultimediaLibraryPlugin extends Plugin {
             return;
         }
 
-        File inputFile = new File(inputPath);
+        Uri inputUri = Uri.parse(inputPath);
+        File inputFile = new File(inputUri.getPath());
 
         String album = call.getString("album");
         File albumDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
@@ -138,19 +140,26 @@ public class MultimediaLibraryPlugin extends Plugin {
     }
 
     protected void handleRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.handleRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (savedLastCall == null) {
+            Log.d(getLogTag(),"No stored plugin call for permissions request result");
+            return;
+        }
 
         for (int r : grantResults) {
             if (r == PackageManager.PERMISSION_DENIED) {
                 Log.d(getLogTag(), "Permission not granted by the user");
-                savedLastCall.reject("Permissions denied");
+                savedLastCall.reject("Permission denied");
                 return;
             }
         }
 
-        if (requestCode == 1) {
-            doSave(savedLastCall);
-            savedLastCall = null;
+        if (requestCode == 9800) {
+            doSaveImage(savedLastCall);
         }
+
+        savedLastCall = null;
     }
 
 }
