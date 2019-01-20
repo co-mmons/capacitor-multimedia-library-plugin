@@ -1,12 +1,10 @@
 import { Capacitor, Plugins } from "@capacitor/core";
-import { FirebaseMessagingWebPlugin } from "./web";
-export * from "./notifications-permission-state";
+import { MultimediaLibraryWebPlugin } from "./web";
 export * from "./plugin";
 export * from "./web";
-export * from "./remote-message";
+export { pluginInstance as MultimediaLibrary };
 var pluginInstance;
 if (!pluginInstance) {
-    pluginInstance = Capacitor.platform == "web" ? new FirebaseMessagingWebPlugin() : Plugins.FirebaseMessaging;
+    pluginInstance = Capacitor.platform == "web" ? new MultimediaLibraryWebPlugin() : Plugins.MultimediaLibrary;
 }
-export { pluginInstance as FirebaseMessaging };
 //# sourceMappingURL=index.js.map

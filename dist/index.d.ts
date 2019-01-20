@@ -1,7 +1,5 @@
-import { FirebaseMessagingPlugin } from "./plugin";
-export * from "./notifications-permission-state";
+import { MultimediaLibraryPlugin } from "./plugin";
 export * from "./plugin";
 export * from "./web";
-export * from "./remote-message";
-declare var pluginInstance: FirebaseMessagingPlugin;
-export { pluginInstance as FirebaseMessaging };
+export { pluginInstance as MultimediaLibrary };
+declare var pluginInstance: MultimediaLibraryPlugin;
