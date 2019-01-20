@@ -12,7 +12,7 @@ export interface MultimediaLibraryPlugin {
 
 export namespace MultimediaLibraryPlugin {
 
-    export async function save(file: string, album?: string): Promise<{filePath: string}> {
+    export async function saveImage(file: string, album?: string): Promise<{filePath: string}> {
         return await Plugins.MultimediaLibrary.saveImage({file: file, album: album});
     }
 

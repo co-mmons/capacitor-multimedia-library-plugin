@@ -9,11 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { Plugins } from "@capacitor/core";
 export var MultimediaLibraryPlugin;
 (function (MultimediaLibraryPlugin) {
-    function save(file, album) {
+    function saveImage(file, album) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield Plugins.MultimediaLibrary.saveImage({ file: file, album: album });
         });
     }
-    MultimediaLibraryPlugin.save = save;
+    MultimediaLibraryPlugin.saveImage = saveImage;
 })(MultimediaLibraryPlugin || (MultimediaLibraryPlugin = {}));
 //# sourceMappingURL=plugin.js.map

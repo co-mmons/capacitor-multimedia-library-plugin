@@ -12,7 +12,7 @@ export interface MultimediaLibraryPlugin {
     }>;
 }
 export declare namespace MultimediaLibraryPlugin {
-    function save(file: string, album?: string): Promise<{
+    function saveImage(file: string, album?: string): Promise<{
         filePath: string;
     }>;
 }
