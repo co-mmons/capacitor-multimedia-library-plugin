@@ -9,7 +9,7 @@ public class CAPMultimediaLibraryPlugin: CAPPlugin {
         
     }
     
-    @objc func saveImage(call: CAPPluginCall) {
+    @objc func saveImage(_ call: CAPPluginCall) {
         
         let status = PHPhotoLibrary.authorizationStatus();
         
