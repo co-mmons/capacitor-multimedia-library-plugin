@@ -6,7 +6,6 @@ import Photos.PHPhotoLibrary
 public class CAPMultimediaLibraryPlugin: CAPPlugin {
     
     public override func load() {
-        
     }
     
     @objc func saveImage(_ call: CAPPluginCall) {
@@ -14,31 +13,31 @@ public class CAPMultimediaLibraryPlugin: CAPPlugin {
         let status = PHPhotoLibrary.authorizationStatus();
         
         if (status == PHAuthorizationStatus.authorized) {
-            doSaveImage(call: call);
+            doSaveImage(call);
             
         } else if (status == PHAuthorizationStatus.notDetermined) {
             
             PHPhotoLibrary.requestAuthorization {status in
                 if (status == PHAuthorizationStatus.authorized) {
-                    self.doSaveImage(call: call);
+                    self.doSaveImage(call);
                 } else {
-                    self.rejectNotAuthorized(call: call);
+                    self.rejectNotAuthorized(call);
                     return;
                 }
             }
             
         } else {
-            rejectNotAuthorized(call: call);
+            rejectNotAuthorized(call);
             return;
         }
         
     }
     
-    func rejectNotAuthorized(call: CAPPluginCall) {
+    func rejectNotAuthorized(_ call: CAPPluginCall) {
         call.reject("Not authorized to access multimedia library");
     }
     
-    func doSaveImage(call: CAPPluginCall) {
+    func doSaveImage(_ call: CAPPluginCall) {
         
         let inputPath = call.getString("file");
         if (inputPath == nil) {
@@ -46,17 +45,24 @@ public class CAPMultimediaLibraryPlugin: CAPPlugin {
             return;
         }
         
-        let inputImage = UIImage(contentsOfFile: inputPath!);
+        let inputUrl = URL(string: inputPath!);
+
+        if (!FileManager.default.fileExists(atPath: inputUrl!.path)) {
+            call.reject("Input file not exists");
+            return;
+        }
         
         let albumName = call.getString("album");
         if (albumName == nil) {
             call.reject("Destination album name must be given");
             return;
         }
+
+        let data = NSData(contentsOf: inputUrl!);
+        let inputImage = UIImage(data: data! as Data);
         
         PHPhotoLibrary.saveImage(image: inputImage!, albumName: albumName!, completion: { imageAsset, error in
             if (imageAsset != nil) {
-                
                 var result: [String: Any] = [:];
                 result["fileId"] = imageAsset?.burstIdentifier;
                 

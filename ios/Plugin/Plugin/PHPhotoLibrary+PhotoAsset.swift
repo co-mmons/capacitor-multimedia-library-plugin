@@ -52,7 +52,7 @@ extension PHPhotoLibrary {
         }, completionHandler: { success, error in
             
             guard let placeholder = placeholder else {
-                completion(nil, NSError(domain: "Placeholder is nill", code: 500));
+                completion(nil, NSError(domain: "Placeholder is nil", code: 500));
                 return;
             }
             
