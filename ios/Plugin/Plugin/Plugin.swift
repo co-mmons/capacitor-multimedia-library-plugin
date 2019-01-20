@@ -67,10 +67,10 @@ public class CAPMultimediaLibraryPlugin: CAPPlugin {
                 result["fileId"] = imageAsset?.burstIdentifier;
                 
                 imageAsset!.requestContentEditingInput(with: PHContentEditingInputRequestOptions()) { (input, _) in
-                    result["filePath"] = input!.fullSizeImageURL;
+                    result["filePath"] = input!.fullSizeImageURL?.path;
+                    call.resolve(result);
                 }
                 
-                call.resolve(result);
             } else {
                 call.reject("Unknown error, image not saved in the library", error);
             }
