@@ -11,7 +11,7 @@
   },
   "author": "co.mmons",
   "license": "MIT",
-  "dependencies": {
+  "peerDependencies": {
     "@capacitor/core": "latest"
   },
   "devDependencies": {
