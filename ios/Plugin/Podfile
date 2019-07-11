@@ -3,10 +3,12 @@ platform :ios, '11.0'
 
 target 'Plugin' do
   use_frameworks!
-  pod 'Capacitor'
+  pod 'Capacitor', :path => '../../node_modules/@capacitor/ios'
+  pod 'CapacitorCordova', :path => '../../node_modules/@capacitor/ios'
 end
 
 target 'PluginTests' do
   use_frameworks!
-  pod 'Capacitor'
+  pod 'Capacitor', :path => '../../node_modules/@capacitor/ios'
+  pod 'CapacitorCordova', :path => '../../node_modules/@capacitor/ios'
 end
