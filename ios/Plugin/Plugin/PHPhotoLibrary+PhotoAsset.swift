@@ -7,55 +7,55 @@ extension PHPhotoLibrary {
     typealias PhotoAsset = PHAsset
     typealias PhotoAlbum = PHAssetCollection
     
-    static func saveImage(image: UIImage, albumName: String, completion: @escaping (PHAsset?, Error?) -> ()) {
-        
+    static func saveImage(url: URL, albumName: String, completion: @escaping (PHAsset?, Error?) -> ()) {
+
         if let album = self.findAlbum(albumName: albumName) {
-            saveImage(image: image, album: album, completion: completion);
+            saveImage(url: url, album: album, completion: completion);
             return;
         }
-        
+
         createAlbum(albumName: albumName) { album, error  in
             if let album = album {
-                self.saveImage(image: image, album: album, completion: completion);
+                self.saveImage(url: url, album: album, completion: completion);
             }
             else {
                 completion(nil, error);
             }
         }
     }
-    
-    static private func saveImage(image: UIImage, album: PhotoAlbum, completion: @escaping (PHAsset?, Error?)->()) {
-        
+
+    static private func saveImage(url: URL, album: PhotoAlbum, completion: @escaping (PHAsset?, Error?)->()) {
+
         var placeholder: PHObjectPlaceholder?
-        
+
         PHPhotoLibrary.shared().performChanges({
-            
+
             // request creating an asset from the image
-            let createAssetRequest = PHAssetChangeRequest.creationRequestForAsset(from: image);
-            
+            let createAssetRequest = PHAssetChangeRequest.creationRequestForAssetFromImage(atFileURL: url);
+
             // request editing the album
             guard let albumChangeRequest = PHAssetCollectionChangeRequest(for: album) else {
                 assert(false, "Album change request failed");
                 return;
             }
-            
+
             // get a placeholder for the new asset and add it to the album editing request
-            guard let photoPlaceholder = createAssetRequest.placeholderForCreatedAsset else {
+            guard let photoPlaceholder = createAssetRequest?.placeholderForCreatedAsset else {
                 assert(false, "Placeholder is nil");
                 return;
             }
-            
+
             placeholder = photoPlaceholder;
-            
+
             albumChangeRequest.addAssets([photoPlaceholder] as NSFastEnumeration);
-            
+
         }, completionHandler: { success, error in
-            
+
             guard let placeholder = placeholder else {
                 completion(nil, NSError(domain: "Placeholder is nil", code: 500));
                 return;
             }
-            
+
             if success {
                 let assets = PHAsset.fetchAssets(withLocalIdentifiers: [placeholder.localIdentifier], options: nil);
                 completion(assets[0], nil);
@@ -64,7 +64,65 @@ extension PHPhotoLibrary {
             }
         })
     }
-    
+
+    static func saveVideo(url: URL, albumName: String, completion: @escaping (PHAsset?, Error?) -> ()) {
+
+        if let album = self.findAlbum(albumName: albumName) {
+            saveVideo(url: url, album: album, completion: completion);
+            return;
+        }
+
+        createAlbum(albumName: albumName) { album, error  in
+            if let album = album {
+                self.saveVideo(url: url, album: album, completion: completion);
+            }
+            else {
+                completion(nil, error);
+            }
+        }
+    }
+
+    static private func saveVideo(url: URL, album: PhotoAlbum, completion: @escaping (PHAsset?, Error?)->()) {
+
+        var placeholder: PHObjectPlaceholder?
+
+        PHPhotoLibrary.shared().performChanges({
+
+            // request creating an asset from the image
+            let createAssetRequest = PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: url);
+
+            // request editing the album
+            guard let albumChangeRequest = PHAssetCollectionChangeRequest(for: album) else {
+                assert(false, "Album change request failed");
+                return;
+            }
+
+            // get a placeholder for the new asset and add it to the album editing request
+            guard let photoPlaceholder = createAssetRequest?.placeholderForCreatedAsset else {
+                assert(false, "Placeholder is nil");
+                return;
+            }
+
+            placeholder = photoPlaceholder;
+
+            albumChangeRequest.addAssets([photoPlaceholder] as NSFastEnumeration);
+
+        }, completionHandler: { success, error in
+
+            guard let placeholder = placeholder else {
+                completion(nil, NSError(domain: "Placeholder is nil", code: 500));
+                return;
+            }
+
+            if success {
+                let assets = PHAsset.fetchAssets(withLocalIdentifiers: [placeholder.localIdentifier], options: nil);
+                completion(assets[0], nil);
+            } else {
+                completion(nil, error ?? NSError(domain: "Unknow error, when adding file to multimedia library", code: 500));
+            }
+        })
+    }
+
     static func findAlbum(albumName: String) -> PhotoAlbum? {
         
         let fetchOptions = PHFetchOptions();

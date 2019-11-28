@@ -8,4 +8,10 @@ export declare class MultimediaLibraryWebPlugin extends WebPlugin implements Mul
     }): Promise<{
         filePath: string;
     }>;
+    saveVideo(call: {
+        file: string;
+        album?: string;
+    }): Promise<{
+        filePath: string;
+    }>;
 }

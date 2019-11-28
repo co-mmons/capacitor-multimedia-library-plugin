@@ -10,5 +10,8 @@ export class MultimediaLibraryWebPlugin extends WebPlugin implements MultimediaL
 	saveImage(call: {file: string, album?: string}): Promise<{filePath: string}> {
 		throw new Error("Method not implemented.");
 	}
-	
+
+	saveVideo(call: {file: string, album?: string}): Promise<{filePath: string}> {
+		throw new Error("Method not implemented.");
+	}
 }

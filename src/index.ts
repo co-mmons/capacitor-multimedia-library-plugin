@@ -4,9 +4,10 @@ import {MultimediaLibraryWebPlugin} from "./web";
 
 export * from "./plugin";
 export * from "./web";
-export {pluginInstance as MultimediaLibrary};
 
-var pluginInstance: MultimediaLibraryPlugin;
+let pluginInstance: MultimediaLibraryPlugin;
 if (!pluginInstance) {
-    pluginInstance = Capacitor.platform == "web" ? new MultimediaLibraryWebPlugin() : Plugins.MultimediaLibrary;
+    pluginInstance = Capacitor.platform == "web" ? new MultimediaLibraryWebPlugin() : Plugins.MultimediaLibrary as MultimediaLibraryPlugin;
 }
+
+export {pluginInstance as MultimediaLibrary};

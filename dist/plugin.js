@@ -15,5 +15,11 @@ export var MultimediaLibraryPlugin;
         });
     }
     MultimediaLibraryPlugin.saveImage = saveImage;
+    function saveVideo(file, album) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield Plugins.MultimediaLibrary.saveVideo({ file: file, album: album });
+        });
+    }
+    MultimediaLibraryPlugin.saveVideo = saveVideo;
 })(MultimediaLibraryPlugin || (MultimediaLibraryPlugin = {}));
 //# sourceMappingURL=plugin.js.map

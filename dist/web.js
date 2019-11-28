@@ -6,5 +6,8 @@ export class MultimediaLibraryWebPlugin extends WebPlugin {
     saveImage(call) {
         throw new Error("Method not implemented.");
     }
+    saveVideo(call) {
+        throw new Error("Method not implemented.");
+    }
 }
 //# sourceMappingURL=web.js.map

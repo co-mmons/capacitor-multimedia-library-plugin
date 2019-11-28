@@ -22,7 +22,7 @@ import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@NativePlugin(name = "MultimediaLibrary", requestCodes = {9800})
+@NativePlugin(name = "MultimediaLibrary", requestCodes = {9800, 9801})
 public class MultimediaLibraryPlugin extends Plugin {
 
     public void load() {
@@ -32,14 +32,25 @@ public class MultimediaLibraryPlugin extends Plugin {
     public void saveImage(PluginCall call) {
 
         if (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            doSaveImage(call);
+            doSaveFile(call);
         } else {
             saveCall(call);
             pluginRequestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, 9800);
         }
     }
 
-    private void doSaveImage(PluginCall call) {
+    @PluginMethod
+    public void saveVideo(PluginCall call) {
+
+        if (hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            doSaveFile(call);
+        } else {
+            saveCall(call);
+            pluginRequestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, 9801);
+        }
+    }
+
+    private void doSaveFile(PluginCall call) {
 
         String inputPath = call.getString("file");
         if (inputPath == null) {
@@ -83,7 +94,7 @@ public class MultimediaLibraryPlugin extends Plugin {
 
         // generate image file name using current date and time
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmssSSS").format(new Date());
-        File newFile = new File(albumDir,"IMG_" + timeStamp + "." + extension);
+        File newFile = new File(albumDir,"MEDIA_" + timeStamp + "." + extension);
 
         // Read and write image files
         FileChannel inChannel = null;
@@ -157,6 +168,8 @@ public class MultimediaLibraryPlugin extends Plugin {
 
         if (requestCode == 9800) {
             doSaveImage(savedLastCall);
+        } else if (requestCode == 9801) {
+            doSaveVideo(savedLastCall);
         }
 
         savedLastCall = null;
