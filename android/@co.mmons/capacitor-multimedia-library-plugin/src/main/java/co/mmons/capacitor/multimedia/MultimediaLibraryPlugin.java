@@ -22,7 +22,7 @@ import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@NativePlugin(name = "MultimediaLibrary", requestCodes = {9800, 9801})
+@NativePlugin(name = "MultimediaLibrary", requestCodes = {9800})
 public class MultimediaLibraryPlugin extends Plugin {
 
     public void load() {
@@ -46,7 +46,7 @@ public class MultimediaLibraryPlugin extends Plugin {
             doSaveFile(call);
         } else {
             saveCall(call);
-            pluginRequestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, 9801);
+            pluginRequestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, 9800);
         }
     }
 
@@ -167,9 +167,7 @@ public class MultimediaLibraryPlugin extends Plugin {
         }
 
         if (requestCode == 9800) {
-            doSaveImage(savedLastCall);
-        } else if (requestCode == 9801) {
-            doSaveVideo(savedLastCall);
+            doSaveFile(savedLastCall);
         }
 
         savedLastCall = null;
