@@ -4,19 +4,19 @@ import Photos.PHPhotoLibrary
 
 @objc(CAPMultimediaLibraryPlugin)
 public class CAPMultimediaLibraryPlugin: CAPPlugin {
-    
+
     public override func load() {
     }
-    
+
     @objc func saveImage(_ call: CAPPluginCall) {
-        
+
         let status = PHPhotoLibrary.authorizationStatus();
-        
+
         if (status == PHAuthorizationStatus.authorized) {
             doSaveImage(call);
-            
+
         } else if (status == PHAuthorizationStatus.notDetermined) {
-            
+
             PHPhotoLibrary.requestAuthorization {status in
                 if (status == PHAuthorizationStatus.authorized) {
                     self.doSaveImage(call);
@@ -25,14 +25,14 @@ public class CAPMultimediaLibraryPlugin: CAPPlugin {
                     return;
                 }
             }
-            
+
         } else {
             rejectNotAuthorized(call);
             return;
         }
-        
+
     }
-    
+
     @objc func saveVideo(_ call: CAPPluginCall) {
 
         let status = PHPhotoLibrary.authorizationStatus();
@@ -94,7 +94,7 @@ public class CAPMultimediaLibraryPlugin: CAPPlugin {
                 }
 
             } else {
-                call.reject("Unknown error, image not saved in the library", error);
+                call.error("Unknown error, image not saved in the library", error)
             }
         });
     }
@@ -131,7 +131,7 @@ public class CAPMultimediaLibraryPlugin: CAPPlugin {
                 }
 
             } else {
-                call.reject("Unknown error, video not saved in the library", error);
+                call.error("Unknown error, video not saved in the library", error);
             }
         });
     }
