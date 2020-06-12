@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/android.iml" filepath="$PROJECT_DIR$/android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/@co.mmons/capacitor-multimedia-library-plugin/capacitor-multimedia-library-plugin.iml" filepath="$PROJECT_DIR$/@co.mmons/capacitor-multimedia-library-plugin/capacitor-multimedia-library-plugin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android.iml" filepath="$PROJECT_DIR$/android.iml" group="android" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/567493974/capacitor-android.iml" filepath="$PROJECT_DIR$/.idea/modules/567493974/capacitor-android.iml" group="android/capacitor-android" />
+      <module fileurl="file://$PROJECT_DIR$/@co.mmons/capacitor-multimedia-library-plugin/capacitor-multimedia-library-plugin.iml" filepath="$PROJECT_DIR$/@co.mmons/capacitor-multimedia-library-plugin/capacitor-multimedia-library-plugin.iml" group="android/capacitor-multimedia-library-plugin" />
     </modules>
   </component>
 </project>

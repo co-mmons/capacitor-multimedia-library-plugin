@@ -1,2 +1,5 @@
+include ':capacitor-android'
+project(':capacitor-android').projectDir = new File('../node_modules/@capacitor/android/capacitor')
+
 include ':capacitor-multimedia-library-plugin'
 project(':capacitor-multimedia-library-plugin').projectDir = new File('@co.mmons/capacitor-multimedia-library-plugin')
